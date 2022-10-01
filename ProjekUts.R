@@ -24,6 +24,14 @@ css <- function(){
                       background-color:black;
                       }
                       
+                      .upload-file{
+                      padding-left:20px;
+                      padding-right:20px;
+                      }
+                      
+                      .content-wrapper{
+                      background-color:white;
+                      }
                       
                       
                       "))
@@ -46,8 +54,20 @@ ui <- dashboardPage(
       tabItems(
         tabItem(
           tabName = "Data",
-          h1("Data")
-        ),
+          fluidRow(
+            tags$div(
+              h1("Data"),
+              fileInput("Upload", "choose your CSV file:", accept = ".csv"),
+              uiOutput("files"),
+              ),
+              
+              class = "upload-file",
+              
+            )
+
+            
+          ),
+
         tabItem(
           tabName = "Visualisasi",
           h1("Visualisasi")
@@ -60,9 +80,36 @@ ui <- dashboardPage(
   )
 )
 
-server <- function(input, output){
+server <- function(input, output, session){
+  data <- reactive({
+    req(input$Upload)
+    read.csv(file = input$Upload$datapath)
+    
+    })
   
+  
+  output$files <- renderUI({
+    if (is.null(input$Upload)){
+      tags$style(HTML('
+        #files{
+        overflow-x:visible;
+    }'
+      ))
+    } else {
+      
+      div(
+        h3("RINGKASAN DATA"),
+        div(
+          renderTable(head(data(), n = 5)),
+          style = "overflow-x:scroll;"
+        )
+        
+      )
+      
+    }
+    
+  })
+    
 }
-
 
 shinyApp(ui =ui, server = server)
