@@ -100,9 +100,9 @@ server <- function(input, output, session){
       div(
         h3("RINGKASAN DATA"),
         div(
-          renderTable(head(data(), n = 5)),
-          p(paste("Ukuran Data:", nrow(data()), "x" , ncol(data())), style="font-weight:bold;"),
-          style = "overflow-x:scroll;"
+          renderTable(head(data(), n = 10)),
+          p(paste("Ukuran Data:", nrow(data()), "x" , ncol(data())), style="font-weight:bold"),
+          style = "overflow-x:auto;"
         )
         
       )
