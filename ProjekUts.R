@@ -101,6 +101,7 @@ server <- function(input, output, session){
         h3("RINGKASAN DATA"),
         div(
           renderTable(head(data(), n = 5)),
+          p(paste("Ukuran Data:", nrow(data()), "x" , ncol(data())), style="font-weight:bold;"),
           style = "overflow-x:scroll;"
         )
         
